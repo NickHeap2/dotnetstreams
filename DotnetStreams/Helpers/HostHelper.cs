@@ -104,13 +104,15 @@ namespace DotnetStreams.Helpers
                     if (hostContext.Configuration.GetSection(messageReceiverConfig).Exists())
                     {
                         services.Configure<MessageReceiverOptions>(options => hostContext.Configuration.GetSection(messageReceiverConfig).Bind(options))
-                                .AddSingleton<IMessageReceiver<string, byte[]>, MessageReceiver<string, byte[]>>();
+                                .AddSingleton<IMessageReceiver<string, byte[]>, MessageReceiver<string, byte[]>>()
+                                .AddSingleton<IMessageReceiver<string, string>, MessageReceiver<string, string>>();
                     }
                     string messageSenderConfig = "Adapters:Messaging:MessageSender";
                     if (hostContext.Configuration.GetSection(messageSenderConfig).Exists())
                     {
-                        services.Configure<MessageReceiverOptions>(options => hostContext.Configuration.GetSection(messageSenderConfig).Bind(options))
-                                .AddSingleton<IMessageReceiver<string, byte[]>, MessageReceiver<string, byte[]>>();
+                        services.Configure<MessageSenderOptions>(options => hostContext.Configuration.GetSection(messageSenderConfig).Bind(options))
+                                .AddSingleton<IMessageSender<string, byte[]>, MessageSender<string, byte[]>>()
+                                .AddSingleton<IMessageSender<string, string>, MessageSender<string, string>>();
                     }
 
                     ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;

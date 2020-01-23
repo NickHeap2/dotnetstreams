@@ -60,8 +60,19 @@ namespace DotnetStreams.Adapters.Kafka
                 topicInitialised = true;
             }
 
-            _logger.LogInformation("Sending to Kafka...");
-            var deliveryResult = await _producer.ProduceAsync(topicName, new Message<K, V>() { Key = key, Value = value, Timestamp = new Timestamp(DateTime.Now) });
+            var deliveryResult = await _producer.ProduceAsync(topicName, new Message<K, V>() { Key = key, Value = value });
+            return (deliveryResult.Status == PersistenceStatus.Persisted);
+        }
+
+        public async Task<bool> SendToKafka(string topicName, Message<K, V> message)
+        {
+            if (!topicInitialised)
+            {
+                await _kafkaAdminClient.EnsureTopicExists(topicName);
+                topicInitialised = true;
+            }
+
+            var deliveryResult = await _producer.ProduceAsync(topicName, message);
             return (deliveryResult.Status == PersistenceStatus.Persisted);
         }
 

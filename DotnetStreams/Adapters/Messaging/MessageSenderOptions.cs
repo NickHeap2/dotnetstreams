@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DotnetStreams.Adapters.File
+namespace DotnetStreams.Adapters.Messaging
 {
-    public class FileSenderOptions
+    public class MessageSenderOptions
     {
         public string TopicName { get; set; }
-        public int ChunkSizeBytes { get; set; }
     }
 }

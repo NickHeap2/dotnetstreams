@@ -2,6 +2,6 @@
 {
     public interface IFileReceiver
     {
-        void ReceiveFileChunk();
+        bool ReceiveFileChunk();
     }
 }

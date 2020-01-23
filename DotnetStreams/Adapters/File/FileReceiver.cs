@@ -26,14 +26,16 @@ namespace DotnetStreams.Adapters.File
             _receiveTimeout = TimeSpan.FromMilliseconds(_fileReceiverOptions.ReceiveTimeout);
         }
 
-        public void ReceiveFileChunk()
+        public bool ReceiveFileChunk()
         {
             var receivedFileChunk = _kafkaConsumer.ReceiveFromKafka(_fileReceiverOptions.TopicName, _receiveTimeout);
             if (receivedFileChunk != null)
             {
                 _logger.LogDebug("Received file chunk Key={MessageKey} Length={MessageLength}", receivedFileChunk.Key, receivedFileChunk.Value.Length);
                 ProcessChunk(receivedFileChunk);
+                return true;
             }
+            return false;
         }
 
         private void ProcessChunk(ConsumeResult<string, byte[]> receivedFileChunk)
@@ -81,12 +83,12 @@ namespace DotnetStreams.Adapters.File
             if (chunkNumber == numberOfChunks)
             {
                 string receiveFilename = Path.Combine(_fileReceiverOptions.ReceiveDirectory, filename);
-                
+                _logger.LogInformation("Moving completed file to {DestinationFile}...", receiveFilename);
+
                 FileHelper.WaitForFileToUnlock(tempFilename);
                 
                 System.IO.File.Move(tempFilename, receiveFilename, true);
             }
-            _logger.LogInformation("    Chunk completed.");
         }
     }
 }

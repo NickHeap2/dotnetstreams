@@ -28,10 +28,11 @@ namespace FileFromKafka
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                //await Task.Delay(1000, stoppingToken);
-
-                _fileReceiver.ReceiveFileChunk();
+                var receivedAChunk = _fileReceiver.ReceiveFileChunk();
+                if (!receivedAChunk)
+                {
+                    _logger.LogInformation("FileFromKafka worker alive.");
+                }
             }
         }
 

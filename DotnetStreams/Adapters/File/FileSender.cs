@@ -23,7 +23,7 @@ namespace DotnetStreams.Adapters.File
 
         public async void SendFile(string fileName, string fullPath)
         {
-            int chunkSize = 102400;
+            int chunkSize = (_fileSenderOptions.ChunkSizeBytes > 0) ? _fileSenderOptions.ChunkSizeBytes : 102400;
             int headerSize = (sizeof(long) * 3);
             var fileInfo = new FileInfo(fullPath);
             var numberOfChunks = (fileInfo.Length / chunkSize) + 1;
@@ -53,17 +53,17 @@ namespace DotnetStreams.Adapters.File
                         var sent = await _kafkaProducer.SendToKafka(_fileSenderOptions.TopicName, fileName, fileChunk);
                         if (sent)
                         {
-                            _logger.LogInformation("    Sent Filename={FileName} Chunk={ChunkNumber} TotalChunks={NumberOfChunks} ok", fileName, chunkNumber, numberOfChunks);
+                            _logger.LogInformation("Sent Filename={FileName} Chunk={ChunkNumber} TotalChunks={NumberOfChunks} ok", fileName, chunkNumber, numberOfChunks);
                         }
                         else
                         {
-                            _logger.LogError("    Failed to send Filename={FileName} Chunk={ChunkNumber} TotalChunks={NumberOfChunks}!", fileName, chunkNumber, numberOfChunks);
+                            _logger.LogError("Failed to send Filename={FileName} Chunk={ChunkNumber} TotalChunks={NumberOfChunks}!", fileName, chunkNumber, numberOfChunks);
                             break;
                         }
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "    Exception sending Filename={FileName} Chunk={ChunkNumber} TotalChunks={NumberOfChunks}!", fileName, chunkNumber, numberOfChunks);
+                        _logger.LogError(ex, "Exception sending Filename={FileName} Chunk={ChunkNumber} TotalChunks={NumberOfChunks}!", fileName, chunkNumber, numberOfChunks);
                     }
                 }
             }
