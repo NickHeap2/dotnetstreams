@@ -52,16 +52,15 @@ namespace DotnetStreams.Adapters.Kafka
             }
         }
 
+        public async Task<bool> InitialiseTopic(string topicName)
+        {
+            topicInitialised = true;
+            return await _kafkaAdminClient.EnsureTopicExists(topicName);
+        }
+
         public async Task<bool> SendToKafka(string topicName, K key, V value)
         {
-            if (!topicInitialised)
-            {
-                await _kafkaAdminClient.EnsureTopicExists(topicName);
-                topicInitialised = true;
-            }
-
-            var deliveryResult = await _producer.ProduceAsync(topicName, new Message<K, V>() { Key = key, Value = value });
-            return (deliveryResult.Status == PersistenceStatus.Persisted);
+            return await SendToKafka(topicName, new Message<K, V>() { Key = key, Value = value });
         }
 
         public async Task<bool> SendToKafka(string topicName, Message<K, V> message)

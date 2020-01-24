@@ -25,15 +25,14 @@ namespace DotnetStreams.Adapters.Messaging
             _messageSenderOptions = messageSenderOptions.Value;
         }
 
-        public void SendMessage(K key, V value)
+        public async Task SendMessage(K key, V value)
         {
-            _logger.LogInformation("Sending Key {Key} to Kafka...", key);
-            _kafkaProducer.SendToKafka(_messageSenderOptions.TopicName, key, value);
+            await SendMessage(new Message<K, V>() { Key = key, Value = value });
         }
-        public void SendMessage(Message<K, V> message)
+        public async Task SendMessage(Message<K, V> message)
         {
             _logger.LogInformation("Sending Key {Key} to Kafka...", message.Key);
-            _kafkaProducer.SendToKafka(_messageSenderOptions.TopicName, message);
+            await _kafkaProducer.SendToKafka(_messageSenderOptions.TopicName, message);
         }
     }
 }

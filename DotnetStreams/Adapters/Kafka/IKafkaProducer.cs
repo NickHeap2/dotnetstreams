@@ -8,6 +8,7 @@ namespace DotnetStreams.Adapters.Kafka
 {
     public interface IKafkaProducer<K, V>
     {
+        Task<bool> InitialiseTopic(string topicName);
         Task<bool> SendToKafka(string topicName, K key, V value);
         Task<bool> SendToKafka(string topicName, Message<K, V> message);
     }

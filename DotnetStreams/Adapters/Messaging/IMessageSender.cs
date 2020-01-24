@@ -1,10 +1,11 @@
 ﻿using Confluent.Kafka;
+using System.Threading.Tasks;
 
 namespace DotnetStreams.Adapters.Messaging
 {
     public interface IMessageSender<K, V>
     {
-        void SendMessage(K key, V value);
-        void SendMessage(Message<K, V> message);
+        Task SendMessage(K key, V value);
+        Task SendMessage(Message<K, V> message);
     }
 }

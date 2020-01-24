@@ -41,7 +41,7 @@ namespace CSVToKafka
             }
         }
 
-        private void _directoryWatcher_Created(object sender, FileSystemEventArgs e)
+        private async void _directoryWatcher_Created(object sender, FileSystemEventArgs e)
         {
             var fileName = Path.GetFileName(e.FullPath);
             using (var csvReader = _csvLoader.LoadCSV(e.FullPath))
@@ -58,7 +58,7 @@ namespace CSVToKafka
                     message.Headers.Add("Filename", Encoding.ASCII.GetBytes(fileName));
                     message.Headers.Add("LineNumber", Encoding.ASCII.GetBytes(csvReader.Context.Row.ToString()));
 
-                    _messageSender.SendMessage(message);
+                    await _messageSender.SendMessage(message);
                 }
             }
         }
