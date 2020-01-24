@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Confluent.Kafka;
 using DotnetStreams.Adapters.File;
 using DotnetStreams.Adapters.Messaging;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +36,7 @@ namespace CSVToKafka
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("FileToKafka worker alive.");
+                _logger.LogInformation("CSVToKafka worker alive.");
                 await Task.Delay(5000, stoppingToken);
             }
         }
@@ -47,9 +49,16 @@ namespace CSVToKafka
                 var records = csvReader.GetRecords<RecordFormat>();
                 foreach (RecordFormat record in records)
                 {
-                    var key = $"{fileName}_{csvReader.Context.Row}";
+                    _logger.LogInformation("Read line {LineNumber} from file {Filename}...", csvReader.Context.Row, fileName);
+                    var key = fileName;
                     var value = JsonSerializer.Serialize<RecordFormat>(record);
-                    _messageSender.SendMessage(key, value);
+
+                    // create the message with headers for the source content
+                    var message = new Message<string, string>() { Key = key, Value = value, Headers = new Headers() };
+                    message.Headers.Add("Filename", Encoding.ASCII.GetBytes(fileName));
+                    message.Headers.Add("LineNumber", Encoding.ASCII.GetBytes(csvReader.Context.Row.ToString()));
+
+                    _messageSender.SendMessage(message);
                 }
             }
         }

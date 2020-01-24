@@ -9,6 +9,6 @@ namespace CSVToKafka
         [Index(1)]
         public string OrderNumber { get; set; }
         [Index(2)]
-        public int LineCount { get; set; }
+        public int OrderLineCount { get; set; }
     }
 }

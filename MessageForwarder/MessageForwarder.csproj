@@ -9,10 +9,4 @@
     <ProjectReference Include="..\DotnetStreams\DotnetStreams.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="dhlparceluk-ca-cert.cer">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
