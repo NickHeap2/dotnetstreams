@@ -98,6 +98,12 @@ namespace DotnetStreams.Helpers
                         services.Configure<DirectoryWatcherOptions>(options => hostContext.Configuration.GetSection(directoryWatcherConfig).Bind(options))
                                 .AddSingleton<IDirectoryWatcher, DirectoryWatcher>();
                     }
+                    string csvLoaderConfig = "Adapters:File:CSVLoader";
+                    if (hostContext.Configuration.GetSection(csvLoaderConfig).Exists())
+                    {
+                        services.Configure<CSVLoaderOptions>(options => hostContext.Configuration.GetSection(csvLoaderConfig).Bind(options))
+                                .AddSingleton<ICSVLoader, CSVLoader>();
+                    }
 
                     //message
                     string messageReceiverConfig = "Adapters:Messaging:MessageReceiver";

@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileFromKafka", "FileFromKa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileToKafka", "FileToKafka\FileToKafka.csproj", "{EB55CF6D-DA7D-49D9-859E-DAF8B74747D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageTransformer", "MessageTransformer\MessageTransformer.csproj", "{98BE5879-0D6A-4D4C-9ADE-215668FA57AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageTransformer", "MessageTransformer\MessageTransformer.csproj", "{98BE5879-0D6A-4D4C-9ADE-215668FA57AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageForwarder", "MessageForwarder\MessageForwarder.csproj", "{84448666-3064-4021-B3EC-5E13254B8EC7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVToKafka", "CSVToKafka\CSVToKafka.csproj", "{84FCA910-4670-4C95-90A0-CE8076A34C2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,18 @@ Global
 		{84448666-3064-4021-B3EC-5E13254B8EC7}.Release|x64.Build.0 = Release|Any CPU
 		{84448666-3064-4021-B3EC-5E13254B8EC7}.Release|x86.ActiveCfg = Release|Any CPU
 		{84448666-3064-4021-B3EC-5E13254B8EC7}.Release|x86.Build.0 = Release|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Release|x64.Build.0 = Release|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{84FCA910-4670-4C95-90A0-CE8076A34C2D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
