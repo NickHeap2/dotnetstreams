@@ -44,15 +44,12 @@ namespace CSVToKafka
             var fileName = Path.GetFileName(e.FullPath);
             using (var csvReader = _csvLoader.LoadCSV(e.FullPath))
             {
-                RecordFormat record;
-                record = csvReader.GetRecord<RecordFormat>();
-                while (record != null)
+                var records = csvReader.GetRecords<RecordFormat>();
+                foreach (RecordFormat record in records)
                 {
                     var key = $"{fileName}_{csvReader.Context.Row}";
                     var value = JsonSerializer.Serialize<RecordFormat>(record);
                     _messageSender.SendMessage(key, value);
-
-                    record = csvReader.GetRecord<RecordFormat>();
                 }
             }
         }

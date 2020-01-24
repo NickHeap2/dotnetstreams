@@ -2,5 +2,6 @@
 {
     public class CSVLoaderOptions
     {
+        public bool HasHeaderRecord { get; set; }
     }
 }

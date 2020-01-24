@@ -28,6 +28,7 @@ namespace DotnetStreams.Adapters.File
             {
                 csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
+                    HasHeaderRecord = _csvLoaderOptions.HasHeaderRecord
                 };
             }
             var csvReader = new CsvReader(textReader, csvConfiguration, false);
