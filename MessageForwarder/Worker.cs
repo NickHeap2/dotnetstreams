@@ -31,26 +31,20 @@ namespace MessageForwarder
             while (!stoppingToken.IsCancellationRequested)
             {
                 // get and forward the message to new topic
-                var receivedMessage = _messageReceiver.ReceiveMessage();
+                var receivedMessage = _messageReceiver.ReceiveFilteredMessage((message) => {
+                    long fileChunk = GetFileChunk(message);
+                    long numberOfChunks = GetNumberOfChunks(message);
+                    return (fileChunk == numberOfChunks);
+                });
                 if (receivedMessage != null)
                 {
-                    if (FilterMessage(receivedMessage))
-                    {
-                        _messageSender.SendMessage(new Message<string, byte[]>() { Key = receivedMessage.Key, Value = receivedMessage.Value });
-                    }
+                     await _messageSender.SendMessage(new Message<string, byte[]>() { Key = receivedMessage.Key, Value = receivedMessage.Value });
                 }
                 else
                 {
-                    _logger.LogInformation("MessageForwarder worker alive.");
+                    //_logger.LogInformation("MessageForwarder worker alive.");
                 }
             }
-        }
-
-        private bool FilterMessage(ConsumeResult<string, byte[]> receivedMessage)
-        {
-            long fileChunk = GetFileChunk(receivedMessage);
-            long numberOfChunks = GetNumberOfChunks(receivedMessage);
-            return (fileChunk == numberOfChunks);
         }
 
         private long GetFileChunk(ConsumeResult<string, byte[]> receivedMessage)

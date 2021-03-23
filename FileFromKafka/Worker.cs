@@ -31,7 +31,7 @@ namespace FileFromKafka
                 var receivedAChunk = _fileReceiver.ReceiveFileChunk();
                 if (!receivedAChunk)
                 {
-                    _logger.LogInformation("FileFromKafka worker alive.");
+                    //_logger.LogInformation("FileFromKafka worker alive.");
                 }
             }
         }

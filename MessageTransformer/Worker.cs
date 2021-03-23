@@ -34,11 +34,11 @@ namespace MessageTransformer
                 var receivedMessage = _messageReceiver.ReceiveMessage();
                 if (receivedMessage != null)
                 {
-                    _messageSender.SendMessage(TransformMessage(receivedMessage));
+                    await _messageSender.SendMessage(TransformMessage(receivedMessage));
                 }
                 else
                 {
-                    _logger.LogInformation("MessageTransformer worker alive.");
+                    //_logger.LogInformation("MessageTransformer worker alive.");
                 }
             }
         }

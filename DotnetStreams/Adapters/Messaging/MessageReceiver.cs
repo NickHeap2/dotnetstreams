@@ -31,5 +31,21 @@ namespace DotnetStreams.Adapters.Messaging
         {
             return _kafkaConsumer.ReceiveFromKafka(_messageReceiverOptions.TopicName, _receiveTimeout);
         }
+
+        public ConsumeResult<K, V> ReceiveFilteredMessage(Func<ConsumeResult<K, V>, bool> filterFunction)
+        {
+            
+            var message = _kafkaConsumer.ReceiveFromKafka(_messageReceiverOptions.TopicName, _receiveTimeout);
+            if (message != null
+                && filterFunction(message))
+            {
+                return message;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }

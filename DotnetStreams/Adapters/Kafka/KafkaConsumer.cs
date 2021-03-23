@@ -37,8 +37,23 @@ namespace DotnetStreams.Adapters.Kafka
                 topicInitialised = true;
             }
 
-            var consumeResult = _consumer.Consume(timeout);
-            return consumeResult;
+            try
+            {
+                var consumeResult = _consumer.Consume(timeout);
+                return consumeResult;
+            }
+            catch (ConsumeException ce)
+            {
+                if (ce.Error.IsFatal)
+                {
+                    _logger.LogError(ce.Error.Reason);
+                }
+                else
+                {
+                    _logger.LogWarning(ce.Error.Reason);
+                }
+                return null;
+            }
         }
 
         private void OnError(IConsumer<K, V> producer, Error error)

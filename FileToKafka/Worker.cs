@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using DotnetStreams.Adapters.File;
+using DotnetStreams.Helpers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -30,7 +31,7 @@ namespace FileToKafka
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("FileToKafka worker alive.");
+                //_logger.LogInformation("FileToKafka worker alive.");
                 await Task.Delay(5000, stoppingToken);
             }
         }
@@ -38,6 +39,9 @@ namespace FileToKafka
         private void _directoryWatcher_Created(object sender, FileSystemEventArgs e)
         {
             _fileSender.SendFile(e.Name, e.FullPath);
+
+            FileHelper.WaitForFileToUnlock(e.FullPath);
+            File.Delete(e.FullPath);
         }
 
     }
